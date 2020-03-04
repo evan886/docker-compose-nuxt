@@ -1,0 +1,40 @@
+version: '3'
+
+networks:
+  frontend:
+    driver: ${NETWORKS_DRIVER}
+  backend:
+    driver: ${NETWORKS_DRIVER}
+
+    
+services:
+
+### nuxt ##############################################
+  nuxt-pc:
+    build:
+      context: ./nuxt
+    restart: always
+    environment:
+      - TZ=${WORKSPACE_TIMEZONE}
+    volumes:
+      - ${DATA_PATH_HOST}/prod-fe-staging--hailuo-admin-web/:/data/app
+    ports:
+      - "3333:3333"
+    networks:
+      - frontend
+      - backend
+
+### nuxt-mobile ##############################################
+  nuxt-mobile:
+    build:
+      context: ./nuxt-mobile
+    restart: always
+    environment:
+      - TZ=${WORKSPACE_TIMEZONE}
+    volumes:
+      - ${DATA_PATH_HOST}/prod-sns-mobile:/data/app
+    ports:
+      - "3334:3334"
+    networks:
+      - frontend
+      - backend
